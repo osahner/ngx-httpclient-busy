@@ -35,3 +35,5 @@ dist/*
 playground/
 
 coverage/
+init-test-bed.spec.js
+bs-config.json
