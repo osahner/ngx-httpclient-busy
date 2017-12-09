@@ -3,6 +3,7 @@ node_modules/*
 npm-debug.log
 
 # TypeScript
+init-test-bed.spec.js
 src/*.js
 src/*.map
 src/*.d.ts
@@ -33,7 +34,7 @@ dist/*
 # Playground tmp files
 .playground
 playground/
+bs-config.json
 
 coverage/
-init-test-bed.spec.js
-bs-config.json
+
