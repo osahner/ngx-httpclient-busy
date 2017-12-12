@@ -1,13 +1,13 @@
-import { NgModule } from '@angular/core';
+import { ModuleWithProviders, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
-import { SpinnerComponent } from './spinner.component';
-import { SpinnerInterceptor } from './http.interceptor';
-import { CountService } from "./count.service";
+import { CounterService } from './counter.service';
+import { HttpClientBusyInterceptor } from './http-client-busy.interceptor';
+import { HttpClientBusyDirective } from './http-client-busy.directive';
 
-export * from './count.service';
-export * from './http.interceptor';
-export * from './spinner.component';
+export * from './counter.service';
+export * from './http-client-busy.directive';
+export * from './http-client-busy.interceptor';
 
 @NgModule({
   imports: [
@@ -15,15 +15,17 @@ export * from './spinner.component';
     HttpClientModule
   ],
   declarations: [
-    SpinnerComponent
+    HttpClientBusyDirective
   ],
   exports: [
-    SpinnerComponent
-  ],
-  providers: [
-    SpinnerInterceptor,
-    CountService
+    HttpClientBusyDirective
   ]
 })
-export class LoadingSpinnerModule {
+export class HttpClientBusyModule {
+  static forRoot(): ModuleWithProviders {
+    return {
+      ngModule: HttpClientBusyModule,
+      providers: [HttpClientBusyInterceptor, CounterService]
+    }
+  }
 }

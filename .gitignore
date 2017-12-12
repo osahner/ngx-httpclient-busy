@@ -23,17 +23,16 @@ Desktop.ini
 
 # Mac
 .DS_Store
-**/.DS_Store
 
 # Ngc generated files
 **/*.ngfactory.ts
 
 # Build files
 dist/*
+playground/index.js
 
 # Playground tmp files
 .playground
-playground/
 bs-config.json
 
 coverage/
