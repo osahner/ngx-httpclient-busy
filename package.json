@@ -1,6 +1,6 @@
 {
   "name": "ngx-httpclient-busy",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "scripts": {
     "build": "gulp build",
     "build:watch": "gulp",
@@ -16,7 +16,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/username/repo"
+    "url": "https://github.com/osahner/ngx-httpclient-busy"
   },
   "author": {
     "name": "Oliver Sahner",

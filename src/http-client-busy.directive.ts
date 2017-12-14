@@ -40,7 +40,7 @@ export class HttpClientBusyDirective implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this._renderer.addClass(this._el.nativeElement, 'http-client-busy');
+    // this._renderer.addClass(this._el.nativeElement, 'http-client-busy');
     this._httpClientBusyConfig.idle = this.httpClientBusy.idle || 'fade';
     this._httpClientBusyConfig.busy = this.httpClientBusy.busy || '';
     this._updateStatus(0);
