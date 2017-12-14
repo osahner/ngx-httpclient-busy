@@ -15,17 +15,18 @@ import { CounterService, HttpClientBusyInterceptor, HttpClientBusyModule } from 
 
 @Component({
   selector: 'app',
-  template: `Icon 
-    <i aria-hidden="true" class="fa fa-cog fa-fw fa-2x fa-spin text-muted loading-spinner fade" httpClientBusy></i>
-    <br>
-    <div class="alert alert-info transition" role="alert" httpClientBusy>
-      httpClientBusy
-    </div>
-    <div class="alert alert-success transition" role="alert" [httpClientBusy]="{idle: 'alert-success', busy: 'alert-info'}">
-      httpClientBusy Config  <code>idle: 'alert-success', busy: 'alert-info'</code>
-    </div>
-    <hr>
-    <button class="btn btn-outline-primary" (click)="ping()">Ping</button>
+  template: `Icon
+  <i aria-hidden="true" class="fa fa-cog fa-fw fa-2x fa-spin text-muted loading-spinner fade" httpClientBusy></i>
+  <br>
+  <div class="alert alert-info transition" role="alert" httpClientBusy>
+    httpClientBusy
+  </div>
+  <div class="alert alert-success transition" role="alert"
+    [httpClientBusy]="{idle: 'alert-success', busy: 'alert-info'}">
+    httpClientBusy Config <code>idle: 'alert-success', busy: 'alert-info'</code>
+  </div>
+  <hr>
+  <button class="btn btn-outline-primary" (click)="ping()">Ping</button>
   `
 })
 class AppComponent implements OnInit {
