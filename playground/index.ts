@@ -15,19 +15,18 @@ import { CounterService, HttpClientBusyInterceptor, HttpClientBusyModule } from 
 
 @Component({
   selector: 'app',
-  template: `FontAwesome:
-    <i aria-hidden="true" class="fa fa-cog fa-fw fa-2x fa-spin text-muted loading-spinner http-client-busy fade" httpClientBusy></i>
-    <br>
-    Alert:
-    <div class="alert alert-info" role="alert" httpClientBusy>
-      httpClientBusy
-    </div>
-    Alert (with class):
-    <div class="alert alert-primary" role="alert" [httpClientBusy]="{idle: 'alert-primary', busy: 'alert-success'}">
-      httpClientBusy: idle: 'alert-primary', busy: 'alert-success'
-    </div>
-    <hr>
-    <button class="btn btn-outline-primary" (click)="ping()">Ping</button>
+  template: `Icon
+  <i aria-hidden="true" class="fa fa-cog fa-fw fa-2x fa-spin text-muted loading-spinner fade" httpClientBusy></i>
+  <br>
+  <div class="alert alert-info transition" role="alert" httpClientBusy>
+    httpClientBusy
+  </div>
+  <div class="alert alert-success transition" role="alert"
+    [httpClientBusy]="{idle: 'alert-success', busy: 'alert-info'}">
+    httpClientBusy Config <code>idle: 'alert-success', busy: 'alert-info'</code>
+  </div>
+  <hr>
+  <button class="btn btn-outline-primary" (click)="ping()">Ping</button>
   `
 })
 class AppComponent implements OnInit {
@@ -44,7 +43,7 @@ class AppComponent implements OnInit {
         return Observable.throw('An error occurred');
       })
       .subscribe(() => {
-        console.log('longrunning done');
+        console.log('longrunning request done');
       });
     this.http
       .put<Array<any>>('https://www.mocky.io/v2/5185415ba171ea3a00704eed?mocky-delay=100ms', {
@@ -54,7 +53,7 @@ class AppComponent implements OnInit {
         return Observable.throw('An error occurred');
       })
       .subscribe(() => {
-        console.log('shortrunning done');
+        console.log('shortrunning request done');
       });
 
     this.http
@@ -62,11 +61,11 @@ class AppComponent implements OnInit {
         headers: new HttpHeaders().set('Accept', 'application/json')
       })
       .catch((error: any) => {
-        console.log('error done');
+        console.log('error request done');
         return Observable.throw('An error occurred');
       })
       .subscribe(() => {
-        console.log('error done');
+        console.log('never happens');
       });
   }
 
