@@ -1,10 +1,14 @@
-import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { async, ComponentFixture, fakeAsync, inject, TestBed } from '@angular/core/testing';
 import { Component } from '@angular/core';
-import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { HTTP_INTERCEPTORS, HttpClient, HttpClientModule, HttpHeaders } from '@angular/common/http';
+import { CounterService, HttpClientBusyInterceptor, HttpClientBusyModule } from './index';
 import { By } from '@angular/platform-browser';
-import { CounterService, HttpClientBusyDirective, HttpClientBusyInterceptor, HttpClientBusyModule } from './index';
-
+import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/observable/throw';
+import 'rxjs/add/observable/of';
+import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/catch';
+import { HttpClientBusyDirective } from './http-client-busy.directive';
 
 @Component({
   selector: 'test-cmp',
@@ -17,61 +21,80 @@ class TestComponent {
 }
 
 describe('HttpClientBusyDirective', () => {
+  let http: HttpClient;
   let fixture: ComponentFixture<TestComponent>;
-  let component: TestComponent;
 
-  beforeEach(
-    () => {
-      TestBed.configureTestingModule({
-        declarations: [
-          TestComponent
-        ],
-        imports: [
-          HttpClientTestingModule,
-          HttpClientModule,
-          HttpClientBusyModule
-        ],
-        providers: [
-          CounterService,
-          { provide: HTTP_INTERCEPTORS, useClass: HttpClientBusyInterceptor, multi: true }
-        ]
-      }).compileComponents().then(() => {
-      });
-      fixture = TestBed.createComponent(TestComponent);
-      component = fixture.componentInstance;
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      declarations: [
+        TestComponent
+      ],
+      imports: [
+        HttpClientModule,
+        HttpClientBusyModule
+      ],
+      providers: [
+        CounterService,
+        { provide: HTTP_INTERCEPTORS, useClass: HttpClientBusyInterceptor, multi: true }
+      ]
     });
-
-
-  it('init directive', fakeAsync(() => {
-    // fixture = TestBed.overrideTemplate(TestComponent,
-    // `<div [httpClientBusy]="{ busy: 'busy', idle: 'idle' }"></div>`).createComponent(TestComponent);
-    fixture.detectChanges();
-    tick(100);
-
-    const directiveEl = fixture.debugElement.query(By.directive(HttpClientBusyDirective));
-    expect(directiveEl).not.toBeNull();
-    // const directiveInstance = directiveEl.injector.get(HttpClientBusyDirective);
+    TestBed.compileComponents();
   }));
 
-  // TODO Get the HttpClient Test running
-  /*it('update directive', inject([HttpClient], (http: HttpClient) => {
+  beforeEach(inject([HttpClient], (s: HttpClient) => {
+    jasmine.DEFAULT_TIMEOUT_INTERVAL = 5000;
+    http = s;
+    fixture = TestBed.createComponent(TestComponent);
     fixture.detectChanges();
-    tick(100);
+  }));
 
-    const directiveEl = fixture.debugElement.query(By.directive(HttpClientBusyDirective));
-    expect(directiveEl).not.toBeNull();
+  it('init directive', fakeAsync(() => {
+      const directiveEl = fixture.debugElement.query(By.directive(HttpClientBusyDirective));
+      expect(directiveEl).not.toBeNull();
+    })
+  );
 
-    http.put('https://www.mocky.io/v2/5185415ba171ea3a00704eed?mocky-delay=2s', {
-        headers: new HttpHeaders().set('Accept', 'application/json')
-      })
-      .subscribe(() => {
-        console.error('longrunning done');
-      });
+  it('update directive class',
+    async(() => {
+      const directiveEl = fixture.debugElement.query(By.directive(HttpClientBusyDirective));
 
-    flushMicrotasks();
-    tick(100);
+      http.put('https://www.mocky.io/v2/5185415ba171ea3a00704eed?mocky-delay=1s', {
+          headers: new HttpHeaders().set('Accept', 'application/json')
+        })
+        .subscribe(() => {
+          expect(directiveEl.nativeElement.classList.contains('idle'))
+            .toBe(true, 'should contain idle class');
+        });
 
-    expect(directiveEl).not.toBeNull();
-  }));*/
+      setTimeout(function () {
+        expect(directiveEl.nativeElement.classList.contains('busy'))
+          .toBe(true, 'should contain busy class');
+      }, 500)
+
+    })
+  );
+
+  it('handle errors',
+    async(() => {
+      const directiveEl = fixture.debugElement.query(By.directive(HttpClientBusyDirective));
+
+      http.put('http://www.mocky.io/v2/5a2fae752d00009614a83b2f?mocky-delay=1s', {
+          headers: new HttpHeaders().set('Accept', 'application/json')
+        })
+        .catch(() => {
+          return Observable.of({});
+        })
+        .subscribe(() => {
+          expect(directiveEl.nativeElement.classList.contains('idle'))
+            .toBe(true, 'should contain idle class');
+        });
+
+      setTimeout(function () {
+        expect(directiveEl.nativeElement.classList.contains('busy'))
+          .toBe(true, 'should contain busy class');
+      }, 500)
+
+    })
+  );
 });
 
