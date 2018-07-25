@@ -10,22 +10,14 @@ export * from './http-client-busy.directive';
 export * from './http-client-busy.interceptor';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    HttpClientModule
-  ],
-  declarations: [
-    HttpClientBusyDirective
-  ],
-  exports: [
-    HttpClientBusyDirective
-  ]
+  imports: [CommonModule, HttpClientModule],
+  declarations: [HttpClientBusyDirective],
+  exports: [HttpClientBusyDirective]
 })
 export class HttpClientBusyModule {
   static forRoot(): ModuleWithProviders {
     return {
-      ngModule: HttpClientBusyModule,
-      providers: [HttpClientBusyInterceptor, CounterService]
-    }
+      ngModule: HttpClientBusyModule
+    };
   }
 }

@@ -1,18 +1,21 @@
 import { Injectable } from '@angular/core';
-import { Subscriber } from 'rxjs/Subscriber';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/share';
+import { Subscriber, Observable } from 'rxjs';
+import { share } from "rxjs/operators";
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class CounterService {
-  private _observable: Observable<number>;
+  private readonly _observable: Observable<number>;
   private _subscriber: Subscriber<number>;
   private _connectionCounter = 0;
 
   constructor() {
     this._observable = Observable.create(subscriber => {
       this._subscriber = subscriber;
-    }).share();
+    }).pipe(
+      share()
+    );
   }
 
   public get observable(): Observable<number> {

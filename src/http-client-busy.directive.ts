@@ -1,24 +1,20 @@
 import { Directive, ElementRef, Input, OnDestroy, OnInit, Renderer2 } from '@angular/core';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 import { CounterService } from './counter.service';
 
 @Directive({
   selector: '[httpClientBusy]'
 })
 export class HttpClientBusyDirective implements OnInit, OnDestroy {
-
   private _autoUnsubscribe: Subscription;
   private _httpClientBusyConfig: HttpClientBusyConfig = {};
 
   @Input() httpClientBusy: HttpClientBusyConfig;
 
-  constructor(private _el: ElementRef,
-              private _renderer: Renderer2,
-              private _counter: CounterService) {
-  }
+  constructor(private _el: ElementRef, private _renderer: Renderer2, private _counter: CounterService) {}
 
   private _updateStatus(count: number) {
-    const busy = (count > 0);
+    const busy = count > 0;
     const hasIdle = this._el.nativeElement.classList.contains(this._httpClientBusyConfig.idle);
     const hasBusy = this._el.nativeElement.classList.contains(this._httpClientBusyConfig.busy);
 
@@ -40,7 +36,6 @@ export class HttpClientBusyDirective implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    // this._renderer.addClass(this._el.nativeElement, 'http-client-busy');
     this._httpClientBusyConfig.idle = this.httpClientBusy.idle || 'fade';
     this._httpClientBusyConfig.busy = this.httpClientBusy.busy || '';
     this._updateStatus(0);
@@ -56,4 +51,3 @@ export interface HttpClientBusyConfig {
   busy?: string;
   idle?: string;
 }
-
