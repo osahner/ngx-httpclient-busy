@@ -7,33 +7,30 @@ import {
   HttpRequest,
   HttpResponse
 } from '@angular/common/http';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/observable/throw';
-import 'rxjs/add/operator/catch';
-import 'rxjs/add/operator/do';
+import { Observable, throwError } from 'rxjs';
+import { catchError, tap } from 'rxjs/operators';
 import { CounterService } from './counter.service';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class HttpClientBusyInterceptor implements HttpInterceptor {
+  constructor(private _counter: CounterService) {}
 
-  constructor(private _counter: CounterService) {
-  }
-
-  intercept(req: HttpRequest<any>,
-            next: HttpHandler): Observable<HttpEvent<any>> {
+  intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     this._counter.increment();
-    return next.handle(req)
-      .do(evt => {
+    return next.handle(req).pipe(
+      tap(evt => {
         if (evt instanceof HttpResponse) {
           this._counter.decrement();
         }
-      })
-      .catch(err => {
+      }),
+      catchError(err => {
         if (err instanceof HttpErrorResponse) {
           this._counter.decrement();
         }
-        return Observable.throw(err);
-      });
+        return throwError(err);
+      })
+    );
   }
 }
-

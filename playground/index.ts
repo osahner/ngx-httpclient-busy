@@ -5,13 +5,10 @@ import { BrowserModule } from '@angular/platform-browser';
 import { Component, NgModule, OnInit } from '@angular/core';
 import { HTTP_INTERCEPTORS, HttpClient, HttpClientModule, HttpHeaders } from '@angular/common/http';
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
-import { Observable } from "rxjs/Observable";
-import "rxjs/add/observable/throw";
-import "rxjs/add/operator/map";
-import "rxjs/add/operator/delay";
-import "rxjs/add/operator/catch";
+import { throwError } from 'rxjs';
 
 import { CounterService, HttpClientBusyInterceptor, HttpClientBusyModule } from '../dist';
+import { catchError } from 'rxjs/operators';
 
 @Component({
   selector: 'app',
@@ -30,18 +27,18 @@ import { CounterService, HttpClientBusyInterceptor, HttpClientBusyModule } from 
   `
 })
 class AppComponent implements OnInit {
-
-  constructor(private http: HttpClient) {
-  }
+  constructor(private http: HttpClient) {}
 
   public ping() {
     this.http
       .put<Array<any>>('https://www.mocky.io/v2/5185415ba171ea3a00704eed?mocky-delay=1s', {
         headers: new HttpHeaders().set('Accept', 'application/json')
       })
-      .catch((error: any) => {
-        return Observable.throw('An error occurred');
-      })
+      .pipe(
+        catchError((error: any) => {
+          return throwError('An error occurred');
+        })
+      )
       .subscribe(() => {
         console.log('longrunning request done');
       });
@@ -49,9 +46,11 @@ class AppComponent implements OnInit {
       .put<Array<any>>('https://www.mocky.io/v2/5185415ba171ea3a00704eed?mocky-delay=100ms', {
         headers: new HttpHeaders().set('Accept', 'application/json')
       })
-      .catch((error: any) => {
-        return Observable.throw('An error occurred');
-      })
+      .pipe(
+        catchError((error: any) => {
+          return throwError('An error occurred');
+        })
+      )
       .subscribe(() => {
         console.log('shortrunning request done');
       });
@@ -60,10 +59,12 @@ class AppComponent implements OnInit {
       .put<Array<any>>('http://www.mocky.io/v2/5a2fae752d00009614a83b2f', {
         headers: new HttpHeaders().set('Accept', 'application/json')
       })
-      .catch((error: any) => {
-        console.log('error request done');
-        return Observable.throw('An error occurred');
-      })
+      .pipe(
+        catchError((error: any) => {
+          console.log('error request done');
+          return throwError('An error occurred');
+        })
+      )
       .subscribe(() => {
         console.log('never happens');
       });
@@ -72,19 +73,14 @@ class AppComponent implements OnInit {
   ngOnInit(): void {
     console.info('AppComponent init');
   }
-
 }
 
 @NgModule({
   declarations: [AppComponent],
   bootstrap: [AppComponent],
   imports: [BrowserModule, HttpClientModule, HttpClientBusyModule.forRoot()],
-  providers: [
-    CounterService,
-    { provide: HTTP_INTERCEPTORS, useClass: HttpClientBusyInterceptor, multi: true }
-  ]
+  providers: [CounterService, { provide: HTTP_INTERCEPTORS, useClass: HttpClientBusyInterceptor, multi: true }]
 })
-class AppModule {
-}
+class AppModule {}
 
 platformBrowserDynamic().bootstrapModule(AppModule);
