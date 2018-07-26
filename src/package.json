@@ -1,6 +1,6 @@
 {
   "name": "ngx-httpclient-busy",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "repository": {
     "type": "git",
     "url": "https://github.com/osahner/ngx-httpclient-busy"
@@ -24,7 +24,6 @@
   "peerDependencies": {
     "@angular/core": "^6.0.0",
     "rxjs": "^6.2.0",
-    "rxjs-compat": "^6.2.0",
     "zone.js": "^0.8.4"
   }
 }

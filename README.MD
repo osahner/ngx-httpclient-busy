@@ -6,42 +6,102 @@
 
 To install this library, run:
 
-```bash
-$ npm install ngx-httpclient-busy --save
+```console
+npm install ngx-httpclient-busy --save
+```
+or
+```console
+yarn add ngx-httpclient-busy
 ```
 
-and then from your Angular `AppModule`:
+### Example
 
 ```typescript
+// app.module.ts
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+import { HttpClientBusyInterceptor, HttpClientBusyModule } from 'ngx-httpclient-busy';
 import { AppComponent } from './app.component';
 
-import { CounterService, HttpClientBusyInterceptor, HttpClientBusyModule } from 'ngx-httpclient-busy';
-
 @NgModule({
-  declarations: [
-    AppComponent
-  ],
-  imports: [
-    BrowserModule,
-    HttpClientBusyModule.forRoot()
-  ],
-  providers: [
-    CounterService,
-    { provide: HTTP_INTERCEPTORS, useClass: HttpClientBusyInterceptor, multi: true }
-  ],
+  declarations: [AppComponent],
+  imports: [BrowserModule, HttpClientBusyModule.forRoot()],
+  providers: [{ provide: HTTP_INTERCEPTORS, useClass: HttpClientBusyInterceptor, multi: true }],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {}
 ```
 
-Simple Working Gear [FontAwesome](http://fontawesome.io/) Icon
+```typescript
+// app.component.ts
+import { Component } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { throwError } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 
-```xml
+@Component({
+  selector: 'app-root',
+  templateUrl: './app.component.html'
+})
+export class AppComponent {
+  title = 'app';
+
+  constructor(private http: HttpClient) {}
+
+  public ping() {
+    this.http
+      .put<Array<any>>('https://www.mocky.io/v2/5185415ba171ea3a00704eed?mocky-delay=1s', {})
+      .pipe(
+        catchError(() => {
+          return throwError('An error occurred');
+        })
+      )
+      .subscribe(() => {
+        console.log('long running request done');
+      });
+  }
+}
+```
+
+```angular2html
+<!-- app.component.html -->
+<div>
+  <link href="https://maxcdn.bootstrapcdn.com/bootswatch/4.1.0/united/bootstrap.min.css"
+  rel="stylesheet"
+  crossorigin="anonymous">
+
+  <div class="alert alert-success" role="alert"
+    [httpClientBusy]="{idle: 'alert-success', busy: 'alert-info'}">
+    httpClientBusy custom config
+  </div>
+
+  <div class="alert alert-info" role="alert" httpClientBusy>
+    httpClientBusy default
+  </div>
+
+  <button class="btn btn-outline-primary" (click)="ping()">Ping</button>
+</div>
+```
+or a simple working gear with [FontAwesome](http://fontawesome.io/) Icons
+
+```angular2html
 <i aria-hidden="true" class="fa fa-cog fa-fw fa-2x fa-spin text-muted loading-spinner fade" httpClientBusy></i>
 ```
+
+### Configuration 
+
+```typescript
+export interface HttpClientBusyConfig {
+  busy?: string; // default value ''
+  idle?: string; // default value 'fade'
+}
+```
+
+### Changelog
+
+* v0.2.1 angular 6 and rxs 6 
+
 
 ## License
 

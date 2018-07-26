@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Subscriber, Observable } from 'rxjs';
-import { share } from "rxjs/operators";
+import { share } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -13,9 +13,7 @@ export class CounterService {
   constructor() {
     this._observable = Observable.create(subscriber => {
       this._subscriber = subscriber;
-    }).pipe(
-      share()
-    );
+    }).pipe(share());
   }
 
   public get observable(): Observable<number> {

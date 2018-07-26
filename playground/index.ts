@@ -6,9 +6,8 @@ import { Component, NgModule, OnInit } from '@angular/core';
 import { HTTP_INTERCEPTORS, HttpClient, HttpClientModule, HttpHeaders } from '@angular/common/http';
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 import { throwError } from 'rxjs';
-
-import { CounterService, HttpClientBusyInterceptor, HttpClientBusyModule } from '../dist';
 import { catchError } from 'rxjs/operators';
+import { HttpClientBusyInterceptor, HttpClientBusyModule } from '../dist';
 
 @Component({
   selector: 'app',
@@ -35,24 +34,24 @@ class AppComponent implements OnInit {
         headers: new HttpHeaders().set('Accept', 'application/json')
       })
       .pipe(
-        catchError((error: any) => {
+        catchError(() => {
           return throwError('An error occurred');
         })
       )
       .subscribe(() => {
-        console.log('longrunning request done');
+        console.log('long running request done');
       });
     this.http
       .put<Array<any>>('https://www.mocky.io/v2/5185415ba171ea3a00704eed?mocky-delay=100ms', {
         headers: new HttpHeaders().set('Accept', 'application/json')
       })
       .pipe(
-        catchError((error: any) => {
+        catchError(() => {
           return throwError('An error occurred');
         })
       )
       .subscribe(() => {
-        console.log('shortrunning request done');
+        console.log('short running request done');
       });
 
     this.http
@@ -60,7 +59,7 @@ class AppComponent implements OnInit {
         headers: new HttpHeaders().set('Accept', 'application/json')
       })
       .pipe(
-        catchError((error: any) => {
+        catchError(() => {
           console.log('error request done');
           return throwError('An error occurred');
         })
@@ -79,7 +78,7 @@ class AppComponent implements OnInit {
   declarations: [AppComponent],
   bootstrap: [AppComponent],
   imports: [BrowserModule, HttpClientModule, HttpClientBusyModule.forRoot()],
-  providers: [CounterService, { provide: HTTP_INTERCEPTORS, useClass: HttpClientBusyInterceptor, multi: true }]
+  providers: [{ provide: HTTP_INTERCEPTORS, useClass: HttpClientBusyInterceptor, multi: true }]
 })
 class AppModule {}
 
