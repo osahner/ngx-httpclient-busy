@@ -64,7 +64,7 @@ export class AppComponent {
 }
 ```
 
-```angular2html
+```html
 <!-- app.component.html -->
 <div>
   <link href="https://maxcdn.bootstrapcdn.com/bootswatch/4.1.0/united/bootstrap.min.css"
@@ -85,7 +85,7 @@ export class AppComponent {
 ```
 or a simple working gear with [FontAwesome](http://fontawesome.io/) Icons
 
-```angular2html
+```html
 <i aria-hidden="true" class="fa fa-cog fa-fw fa-2x fa-spin text-muted loading-spinner fade" httpClientBusy></i>
 ```
 
