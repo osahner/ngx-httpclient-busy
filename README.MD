@@ -1,6 +1,6 @@
 # ngx-httpclient-busy
 
-A global Angular ^5 HTTP Interceptor with decorator to show staus of all HttpClient requests (e.g. busy/working indicator)
+A global Angular 6 HTTP Interceptor with decorator to show staus of all HttpClient requests (e.g. busy/working indicator)
 
 Demo on [stackblitz](https://stackblitz.com/edit/angular-9ykyid?embed=1&file=src/app/app.component.html)
 
@@ -102,6 +102,7 @@ export interface HttpClientBusyConfig {
 
 ### Changelog
 
+* v0.2.2 streamline code and moved interception to module
 * v0.2.1 angular 6 and rxs 6
 
 
