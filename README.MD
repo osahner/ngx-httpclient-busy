@@ -24,14 +24,12 @@ yarn add ngx-httpclient-busy
 // app.module.ts
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
-import { HttpClientBusyInterceptor, HttpClientBusyModule } from 'ngx-httpclient-busy';
+import { HttpClientBusyModule } from 'ngx-httpclient-busy';
 import { AppComponent } from './app.component';
 
 @NgModule({
   declarations: [AppComponent],
   imports: [BrowserModule, HttpClientBusyModule.forRoot()],
-  providers: [{ provide: HTTP_INTERCEPTORS, useClass: HttpClientBusyInterceptor, multi: true }],
   bootstrap: [AppComponent]
 })
 export class AppModule {}
@@ -93,7 +91,7 @@ or a simple working gear with [FontAwesome](http://fontawesome.io/) Icons
 <i aria-hidden="true" class="fa fa-cog fa-fw fa-2x fa-spin text-muted loading-spinner fade" httpClientBusy></i>
 ```
 
-### Configuration 
+### Configuration
 
 ```typescript
 export interface HttpClientBusyConfig {
@@ -104,7 +102,7 @@ export interface HttpClientBusyConfig {
 
 ### Changelog
 
-* v0.2.1 angular 6 and rxs 6 
+* v0.2.1 angular 6 and rxs 6
 
 
 ## License

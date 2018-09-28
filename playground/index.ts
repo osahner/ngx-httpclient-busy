@@ -3,11 +3,11 @@
  */
 import { BrowserModule } from '@angular/platform-browser';
 import { Component, NgModule, OnInit } from '@angular/core';
-import { HTTP_INTERCEPTORS, HttpClient, HttpClientModule, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 import { throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import { HttpClientBusyInterceptor, HttpClientBusyModule } from '../dist';
+import { HttpClientBusyModule } from '../dist';
 
 @Component({
   selector: 'app',
@@ -70,6 +70,7 @@ class AppComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    // tslint:disable-next-line:no-console
     console.info('AppComponent init');
   }
 }
@@ -77,8 +78,7 @@ class AppComponent implements OnInit {
 @NgModule({
   declarations: [AppComponent],
   bootstrap: [AppComponent],
-  imports: [BrowserModule, HttpClientModule, HttpClientBusyModule.forRoot()],
-  providers: [{ provide: HTTP_INTERCEPTORS, useClass: HttpClientBusyInterceptor, multi: true }]
+  imports: [BrowserModule, HttpClientBusyModule.forRoot()]
 })
 class AppModule {}
 

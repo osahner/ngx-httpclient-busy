@@ -26,17 +26,9 @@ describe('HttpClientBusyDirective', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [
-        TestComponent
-      ],
-      imports: [
-        HttpClientModule,
-        HttpClientBusyModule
-      ],
-      providers: [
-        CounterService,
-        { provide: HTTP_INTERCEPTORS, useClass: HttpClientBusyInterceptor, multi: true }
-      ]
+      declarations: [TestComponent],
+      imports: [HttpClientModule, HttpClientBusyModule.forRoot()],
+      providers: []
     });
     TestBed.compileComponents();
   }));
@@ -49,52 +41,42 @@ describe('HttpClientBusyDirective', () => {
   }));
 
   it('init directive', fakeAsync(() => {
-      const directiveEl = fixture.debugElement.query(By.directive(HttpClientBusyDirective));
-      expect(directiveEl).not.toBeNull();
-    })
-  );
+    const directiveEl = fixture.debugElement.query(By.directive(HttpClientBusyDirective));
+    expect(directiveEl).not.toBeNull();
+  }));
 
-  it('update directive class',
-    async(() => {
-      const directiveEl = fixture.debugElement.query(By.directive(HttpClientBusyDirective));
+  it('update directive class', async(() => {
+    const directiveEl = fixture.debugElement.query(By.directive(HttpClientBusyDirective));
 
-      http.put('https://www.mocky.io/v2/5185415ba171ea3a00704eed?mocky-delay=1s', {
-          headers: new HttpHeaders().set('Accept', 'application/json')
-        })
-        .subscribe(() => {
-          expect(directiveEl.nativeElement.classList.contains('idle'))
-            .toBe(true, 'should contain idle class');
-        });
+    http
+      .put('https://www.mocky.io/v2/5185415ba171ea3a00704eed?mocky-delay=1s', {
+        headers: new HttpHeaders().set('Accept', 'application/json')
+      })
+      .subscribe(() => {
+        expect(directiveEl.nativeElement.classList.contains('idle')).toBe(true, 'should contain idle class');
+      });
 
-      setTimeout(function () {
-        expect(directiveEl.nativeElement.classList.contains('busy'))
-          .toBe(true, 'should contain busy class');
-      }, 500)
+    setTimeout(function() {
+      expect(directiveEl.nativeElement.classList.contains('busy')).toBe(true, 'should contain busy class');
+    }, 500);
+  }));
 
-    })
-  );
+  it('handle errors', async(() => {
+    const directiveEl = fixture.debugElement.query(By.directive(HttpClientBusyDirective));
 
-  it('handle errors',
-    async(() => {
-      const directiveEl = fixture.debugElement.query(By.directive(HttpClientBusyDirective));
+    http
+      .put('http://www.mocky.io/v2/5a2fae752d00009614a83b2f?mocky-delay=1s', {
+        headers: new HttpHeaders().set('Accept', 'application/json')
+      })
+      .catch(() => {
+        return Observable.of({});
+      })
+      .subscribe(() => {
+        expect(directiveEl.nativeElement.classList.contains('idle')).toBe(true, 'should contain idle class');
+      });
 
-      http.put('http://www.mocky.io/v2/5a2fae752d00009614a83b2f?mocky-delay=1s', {
-          headers: new HttpHeaders().set('Accept', 'application/json')
-        })
-        .catch(() => {
-          return Observable.of({});
-        })
-        .subscribe(() => {
-          expect(directiveEl.nativeElement.classList.contains('idle'))
-            .toBe(true, 'should contain idle class');
-        });
-
-      setTimeout(function () {
-        expect(directiveEl.nativeElement.classList.contains('busy'))
-          .toBe(true, 'should contain busy class');
-      }, 500)
-
-    })
-  );
+    setTimeout(function() {
+      expect(directiveEl.nativeElement.classList.contains('busy')).toBe(true, 'should contain busy class');
+    }, 500);
+  }));
 });
-
