@@ -1,7 +1,6 @@
 import { ModuleWithProviders, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
-import { CounterService } from './counter.service';
 import { HttpClientBusyInterceptor } from './http-client-busy.interceptor';
 import { HttpClientBusyDirective } from './http-client-busy.directive';
 
