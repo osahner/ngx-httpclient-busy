@@ -1,13 +1,24 @@
 {
   "name": "ngx-httpclient-busy",
-  "version": "0.0.0",
+  "version": "0.3.0",
+  "author": {
+    "name": "Oliver Sahner",
+    "email": "osahner@gmail.com"
+  },
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
-    "test": "ng test",
-    "lint": "ng lint",
-    "e2e": "ng e2e"
+    "build_lib": "ng build ngx-httpclient-busy",
+    "copy-license": "cp ./LICENSE ./dist/ngx-httpclient-busy",
+    "copy-readme": "cp ./README.md ./dist/ngx-httpclient-busy",
+    "copy-files": "yarn copy-license && yarn copy-readme",
+    "npm_pack": "cd dist/ngx-httpclient-busy && npm pack",
+    "package": "yarn build_lib && yarn copy-files && yarn npm_pack",
+    "test": "yarn test_lib",
+    "test_lib": "ng test ngx-httpclient-busy",
+    "lint": "yarn lint_lib",
+    "lint_lib": "ng lint ngx-httpclient-busy"
   },
   "private": true,
   "dependencies": {
