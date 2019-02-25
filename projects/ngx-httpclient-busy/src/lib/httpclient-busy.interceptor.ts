@@ -15,19 +15,19 @@ import { CounterService } from './counter.service';
   providedIn: 'root'
 })
 export class HttpClientBusyInterceptor implements HttpInterceptor {
-  constructor(private _counter: CounterService) {}
+  constructor(private counter: CounterService) {}
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    this._counter.increment();
+    this.counter.increment();
     return next.handle(req).pipe(
       tap(evt => {
         if (evt instanceof HttpResponse) {
-          this._counter.decrement();
+          this.counter.decrement();
         }
       }),
       catchError(err => {
         if (err instanceof HttpErrorResponse) {
-          this._counter.decrement();
+          this.counter.decrement();
         }
         return throwError(err);
       })

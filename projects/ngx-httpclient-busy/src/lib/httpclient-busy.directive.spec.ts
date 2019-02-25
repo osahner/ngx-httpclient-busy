@@ -1,19 +1,17 @@
 import { async, ComponentFixture, fakeAsync, inject, TestBed } from '@angular/core/testing';
 import { Component } from '@angular/core';
-import { HTTP_INTERCEPTORS, HttpClient, HttpClientModule, HttpHeaders } from '@angular/common/http';
-import { CounterService, HttpClientBusyInterceptor, HttpClientBusyModule } from './index';
+import { HttpClient, HttpClientModule, HttpHeaders } from '@angular/common/http';
 import { By } from '@angular/platform-browser';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/observable/throw';
-import 'rxjs/add/observable/of';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/catch';
-import { HttpClientBusyDirective } from './http-client-busy.directive';
+import { of } from 'rxjs';
+import { HttpClientBusyModule } from './httpclient-busy.module';
+import { HttpClientBusyDirective } from './httpclient-busy.directive';
+import { catchError } from 'rxjs/operators';
 
 @Component({
-  selector: 'test-cmp',
+  selector: 'lib-test',
   template: `
-    <div [httpClientBusy]="{ busy: 'busy', idle: 'idle' }"></div>`
+    <div [httpClientBusy]="{ busy: 'busy', idle: 'idle' }"></div>
+  `
 })
 class TestComponent {
   disabled;
@@ -56,7 +54,7 @@ describe('HttpClientBusyDirective', () => {
         expect(directiveEl.nativeElement.classList.contains('idle')).toBe(true, 'should contain idle class');
       });
 
-    setTimeout(function() {
+    setTimeout(() => {
       expect(directiveEl.nativeElement.classList.contains('busy')).toBe(true, 'should contain busy class');
     }, 500);
   }));
@@ -68,14 +66,12 @@ describe('HttpClientBusyDirective', () => {
       .put('http://www.mocky.io/v2/5a2fae752d00009614a83b2f?mocky-delay=1s', {
         headers: new HttpHeaders().set('Accept', 'application/json')
       })
-      .catch(() => {
-        return Observable.of({});
-      })
+      .pipe(catchError(selector => of({})))
       .subscribe(() => {
         expect(directiveEl.nativeElement.classList.contains('idle')).toBe(true, 'should contain idle class');
       });
 
-    setTimeout(function() {
+    setTimeout(() => {
       expect(directiveEl.nativeElement.classList.contains('busy')).toBe(true, 'should contain busy class');
     }, 500);
   }));

@@ -1,24 +1,19 @@
 # ngx-httpclient-busy
 
-A global Angular 6 HTTP Interceptor with decorator to show staus of all HttpClient requests (e.g. busy/working indicator)
+> A global Angular 6 HTTP Interceptor with decorator to show staus of all HttpClient requests (e.g. busy/working indicator)
 
 Demo on [stackblitz](https://stackblitz.com/edit/angular-9ykyid?embed=1&file=src/app/app.component.html)
-
 [![Build Status](https://travis-ci.org/osahner/ngx-httpclient-busy.svg?branch=master)](https://travis-ci.org/osahner/ngx-httpclient-busy)
+[![npm version](https://badge.fury.io/js/ngx-httpclient-busy.svg)](https://badge.fury.io/js/ngx-httpclient-busy)
+[![codecov](https://codecov.io/gh/osahner/ngx-httpclient-busy/branch/master/graph/badge.svg)](https://codecov.io/gh/osahner/ngx-httpclient-busy)
 
 ## Installation
 
-To install this library, run:
-
-```console
+```sh
 npm install ngx-httpclient-busy --save
 ```
-or
-```console
-yarn add ngx-httpclient-busy
-```
 
-### Example
+## Integration
 
 ```typescript
 // app.module.ts
@@ -91,7 +86,7 @@ or a simple working gear with [FontAwesome](http://fontawesome.io/) Icons
 <i aria-hidden="true" class="fa fa-cog fa-fw fa-2x fa-spin text-muted loading-spinner fade" httpClientBusy></i>
 ```
 
-### Configuration
+## Configuration
 
 ```typescript
 export interface HttpClientBusyConfig {
@@ -100,7 +95,7 @@ export interface HttpClientBusyConfig {
 }
 ```
 
-### Changelog
+## Changelog
 
 * v0.2.2 streamline code and moved interception to module
 * v0.2.1 angular 6 and rxs 6
