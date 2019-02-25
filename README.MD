@@ -99,7 +99,7 @@ export interface HttpClientBusyConfig {
 ## Release History
 
 - 0.3.0
-  - switchted to @angular/cli and ng-packagr,
+  - switched to @angular/cli and ng-packagr,
   - requires @angular/core v7
 - 0.2.1
   - requires @angular/core v7 and rxjs v6
