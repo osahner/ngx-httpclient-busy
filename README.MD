@@ -98,6 +98,8 @@ export interface HttpClientBusyConfig {
 
 ## Release History
 
+- 0.4.0
+  - update @angular/cli and @angular/core to v8
 - 0.3.0
   - switched to @angular/cli and ng-packagr,
   - requires @angular/core v7
