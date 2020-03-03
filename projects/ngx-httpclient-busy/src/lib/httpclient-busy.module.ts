@@ -11,7 +11,7 @@ import { HttpClientBusyDirective } from './httpclient-busy.directive';
   providers: [{ provide: HTTP_INTERCEPTORS, useClass: HttpClientBusyInterceptor, multi: true }]
 })
 export class HttpClientBusyModule {
-  static forRoot(): ModuleWithProviders {
+  static forRoot(): ModuleWithProviders<HttpClientBusyModule> {
     return {
       ngModule: HttpClientBusyModule
     };
