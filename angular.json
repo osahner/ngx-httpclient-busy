@@ -15,7 +15,12 @@
             "tsConfig": "projects/ngx-httpclient-busy/tsconfig.lib.json",
             "project": "projects/ngx-httpclient-busy/ng-package.json"
           }
-        },
+        ,          "configurations": {
+            "production": {
+              "tsConfig": "projects/ngx-httpclient-busy/tsconfig.lib.prod.json"
+            }
+          }
+},
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {

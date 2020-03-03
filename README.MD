@@ -98,6 +98,8 @@ export interface HttpClientBusyConfig {
 
 ## Release History
 
+- 0.5.0
+  - update @angular/cli and @angular/core to v9
 - 0.4.0
   - update @angular/cli and @angular/core to v8
 - 0.3.0
