@@ -1,16 +1,10 @@
-dist: trusty
-sudo: false
-
-language: node_js
-node_js:
-  - "10"
+dist: bionic
 
 addons:
-  apt:
-    sources:
-      - google-chrome
-    packages:
-      - google-chrome-stable
+  chrome: stable
+
+node_js:
+  - "12"
 
 cache:
   directories:
@@ -21,5 +15,5 @@ install:
   - yarn install
 
 script:
-  - yarn test --no-watch --no-progress --code-coverage --browsers=ChromeHeadlessCI
+  - yarn test_lib --no-watch --no-progress --code-coverage --browsers=ChromeHeadlessCI
   - codecov
