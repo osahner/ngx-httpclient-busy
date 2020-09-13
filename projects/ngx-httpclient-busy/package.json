@@ -19,6 +19,9 @@
     "url": "https://github.com/osahner/ngx-httpclient-busy/issues"
   },
   "homepage": "https://github.com/osahner/ngx-httpclient-busy#readme",
+  "dependencies": {
+    "tslib": "^2.0.0"
+  },
   "peerDependencies": {
     "@angular/common": "^9",
     "@angular/core": "^9"
