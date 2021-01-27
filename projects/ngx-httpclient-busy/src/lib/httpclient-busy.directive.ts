@@ -3,7 +3,7 @@ import { Subscription } from 'rxjs';
 import { CounterService } from './counter.service';
 
 @Directive({
-  selector: '[httpClientBusy]'
+  selector: '[httpClientBusy]',
 })
 export class HttpClientBusyDirective implements OnInit, OnDestroy {
   private autoUnsubscribe: Subscription;
@@ -11,7 +11,11 @@ export class HttpClientBusyDirective implements OnInit, OnDestroy {
 
   @Input() httpClientBusy: HttpClientBusyConfig;
 
-  constructor(private el: ElementRef, private renderer: Renderer2, private counter: CounterService) {}
+  constructor(
+    private el: ElementRef,
+    private renderer: Renderer2,
+    private counter: CounterService
+  ) {}
 
   private _updateStatus(count: number) {
     const busy = count > 0;
@@ -39,7 +43,7 @@ export class HttpClientBusyDirective implements OnInit, OnDestroy {
     this.httpClientBusyConfig.idle = this.httpClientBusy.idle || 'fade';
     this.httpClientBusyConfig.busy = this.httpClientBusy.busy || '';
     this._updateStatus(0);
-    this.autoUnsubscribe = this.counter.observable.subscribe(next => this._updateStatus(next));
+    this.autoUnsubscribe = this.counter.observable.subscribe((next) => this._updateStatus(next));
   }
 
   ngOnDestroy() {

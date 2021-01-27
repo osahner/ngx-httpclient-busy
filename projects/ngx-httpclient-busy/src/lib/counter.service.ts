@@ -3,7 +3,7 @@ import { Subscriber, Observable } from 'rxjs';
 import { share } from 'rxjs/operators';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class CounterService {
   private readonly _observable: Observable<number>;
@@ -11,7 +11,7 @@ export class CounterService {
   private _connectionCounter = 0;
 
   constructor() {
-    this._observable = Observable.create(subscriber => {
+    this._observable = new Observable<number>((subscriber) => {
       this._subscriber = subscriber;
     }).pipe(share());
   }

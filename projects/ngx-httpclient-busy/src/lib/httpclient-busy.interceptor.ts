@@ -5,14 +5,14 @@ import {
   HttpHandler,
   HttpInterceptor,
   HttpRequest,
-  HttpResponse
+  HttpResponse,
 } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 import { CounterService } from './counter.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class HttpClientBusyInterceptor implements HttpInterceptor {
   constructor(private counter: CounterService) {}
@@ -20,12 +20,12 @@ export class HttpClientBusyInterceptor implements HttpInterceptor {
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     this.counter.increment();
     return next.handle(req).pipe(
-      tap(evt => {
+      tap((evt) => {
         if (evt instanceof HttpResponse) {
           this.counter.decrement();
         }
       }),
-      catchError(err => {
+      catchError((err) => {
         if (err instanceof HttpErrorResponse) {
           this.counter.decrement();
         }
